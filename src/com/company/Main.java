@@ -22,7 +22,7 @@ public class Main {
                 data = stopsReader.nextLine();
                 //splits string into array
                 String[] stopsArray = data.split(",");
-                //first data is stop ID, third is stop name
+                //first element in array is stop ID, third is stop name
                 stops.put(Integer.parseInt(stopsArray[0]), stopsArray[2]);
             }
             stopsReader.close();
@@ -48,15 +48,16 @@ public class Main {
                 while (stopTimesReader.hasNextLine()) {
                     data = stopTimesReader.nextLine();
                     String[] stopTimesArray = data.split(",");
-                    //fourth data is stop ID, checks if ID matches input ID
+                    //fourth element in array is stop ID, checks if ID matches input ID
                     if (Integer.parseInt(stopTimesArray[3]) == id) {
                         //creates array list if key for route ID does not yet exist
-                        //substring matches route ID
+                        //substring matches route ID (first element in array)
                         if (!stopTimes.containsKey(Integer.parseInt(stopTimesArray[0].substring(10, 13)))) {
                             stopTimes.put(Integer.parseInt(stopTimesArray[0].substring(10, 13)),
                                     new ArrayList<>());
                         }
                         //if key already exists, add time in the list
+                        //time is second element in array
                         stopTimes.get(Integer.parseInt(stopTimesArray[0].substring(10, 13)))
                                 .add(stopTimesArray[1].substring(0, 5));
 
@@ -76,10 +77,10 @@ public class Main {
             //iterating stop times hash map
             stopTimes.forEach((key, value) -> {
                 System.out.print(key + ": ");
-                //sorting times
+                //sorting times from earliest to latest
                 Collections.sort(value);
                 for (String s : value) {
-                    //converting time into minutes
+                    //converting time from stop times map into minutes
                     int minutes = Integer.parseInt(s.substring(0, 2)) * 60
                             + Integer.parseInt(s.substring(3, 5));
                     //checks whether bus time is greater or equal to current time but not greater than 2 hours
@@ -96,7 +97,7 @@ public class Main {
                     if (count[0] > busCount)
                         break;
                 }
-                //resets counter
+                //resets counter; so that counter counts for next route
                 count[0] = 0;
                 System.out.println();
             });
